@@ -5,6 +5,7 @@ from flask_jwt_extended import JWTManager
 import os
 from api import *
 from models import *
+from auth  import LoginManager
 os.environ['HOST'] = '0.0.0.0'
 
 app = Flask(__name__)
@@ -16,6 +17,7 @@ login_manager = LoginManager()
 login_manager.login_view = 'login'  # Укажите вид, используемый для авторизации
 login_manager.init_app(app)
 
+app.register_blueprint(auth_blueprint)
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))

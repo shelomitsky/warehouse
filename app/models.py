@@ -1,35 +1,10 @@
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import UserMixin, LoginManager
 from flask_jwt_extended import create_access_token
 from flask_bcrypt import Bcrypt
 import jwt
 # Create the database models.
 db = SQLAlchemy()
-login_manager = LoginManager()
-bcrypt = Bcrypt()
-
-""" Начало авторизации """
-class User(UserMixin, db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(80), unique=True, nullable=False)
-    password = db.Column(db.String(120), nullable=False)
-
-    def generate_token(self):
-        # Генерируем JSON Web Token (JWT) для аутентификации пользователя
-        payload = {
-            'id': self.id,
-            'username': self.username
-        }
-        token = jwt.encode(payload, 'secret', algorithm='HS256')
-        return token
-    
-    def is_authenticated(self):
-        # Здесь вы можете реализовать проверку авторизации на основе токена
-        # Возвращайте True, если пользователь авторизован, и False в противном случае
-        return True  # Замените на вашу реализацию
-    def get_id(self):
-        return str(self.id)
-""" Конец авторизации """    
+ 
 class Flower(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), unique=True, nullable=False)

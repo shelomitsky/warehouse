@@ -5,7 +5,7 @@ from flask_bcrypt import Bcrypt
 from flask_login import login_user
 from models import User, Flower, Material, Bouquet, FlowerSize, BouquetFlower, BouquetMaterial, Bouquet, db
 
-bcrypt = Bcrypt()
+
 
 def create_bouquet():
     if request.method == 'POST':
@@ -40,34 +40,6 @@ def view_bouquet(bouquet_id):
     bouquet_prices = bouquet.calculate_price()  # For all sizes
     # bouquet_prices = bouquet.calculate_price(specific_size="40cm")  # For a specific size
     return render_template('view_bouquet.html', bouquet=bouquet, bouquet_prices=bouquet_prices)
-
-# Create a user.
-def create_user():
-    data = request.form
-    hashed_password = bcrypt.generate_password_hash(data['password'], method='sha256')
-    new_user = User(username=data['username'], password=hashed_password)
-    db.session.add(new_user)
-    db.session.commit()
-    return redirect(url_for('login'))
-
-# Authenticate a user.
-@app.route('/api/auth', methods=['POST'])
-def auth():
-    data = request.form
-    user = User.query.filter_by(username=data['username']).first()
-    if not user or not bcrypt.check_password_hash(user.password, data['password']):
-        return jsonify({'message': 'Invalid username or password'}), 401
-    access_token = user.generate_token()
-    login_user(user)
-    return jsonify({'token': access_token}), 200
-
-def create_user():
-    data = request.form
-    hashed_password = bcrypt.generate_password_hash(data['password'], method='sha256')
-    new_user = User(username=data['username'], password=hashed_password)
-    db.session.add(new_user)
-    db.session.commit()
-    return redirect(url_for('login'))
 
 
 # Get all flowers.
