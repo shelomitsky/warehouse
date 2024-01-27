@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create Bouquet</title>
+</head>
+<body>
+    <form method="POST">
+        {% for flower in flowers %}
+            <div>
+                <label>{{ flower.name }}</label>
+                {% for size in flower.sizes %}
+                    <input type="checkbox" name="flower_{{ flower.id }}_size_{{ size.id }}" value="{{ size.id }}"> {{ size.size }}
+                {% endfor %}
+            </div>
+        {% endfor %}
+        <input type="submit" value="Create Bouquet">
+    </form>
+</body>
+</html>
