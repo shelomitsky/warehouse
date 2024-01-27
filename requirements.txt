@@ -4,3 +4,6 @@ flask-jwt-extended
 werkzeug
 psycopg2-binary
 docker
+Flask-JWT-Extended
+Flask-Login
+Flask-Bcrypt

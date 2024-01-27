@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="form-container" id="login-form">
+        <h1>Login</h1>
+        <form method="POST" action="/api/auth">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required><br>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required><br>
+            <input type="submit" value="Login">
+        </form>
+        <button id="toggle-form">Register</button>
+    </div>
+
+    <div class="form-container" id="register-form" style="display: none;">
+        <h1>Register</h1>
+        <form method="POST" action="/api/users">
+            <label for="reg-username">Username:</label>
+            <input type="text" id="reg-username" name="username" required><br>
+            <label for="reg-password">Password:</label>
+            <input type="password" id="reg-password" name="password" required><br>
+            <input type="submit" value="Register">
+        </form>
+        <button id="toggle-form-back">Back to Login</button>
+    </div>
+
+    <script>
+        const toggleFormButton = document.getElementById('toggle-form');
+        const toggleFormBackButton = document.getElementById('toggle-form-back');
+        const loginForm = document.getElementById('login-form');
+        const registerForm = document.getElementById('register-form');
+
+        toggleFormButton.addEventListener('click', function() {
+            loginForm.style.display = 'none';
+            registerForm.style.display = 'block';
+        });
+
+        toggleFormBackButton.addEventListener('click', function() {
+            loginForm.style.display = 'block';
+            registerForm.style.display = 'none';
+        });
+    </script>
+</body>
+</html>

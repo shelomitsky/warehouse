@@ -1,7 +1,11 @@
 from main import app
-from flask import Flask, redirect, request, jsonify, url_for, render_template
+from flask import  redirect, request, jsonify, url_for, render_template
+from flask_jwt_extended import jwt_manager
+from flask_bcrypt import Bcrypt
+from flask_login import login_user
 from models import User, Flower, Material, Bouquet, FlowerSize, BouquetFlower, BouquetMaterial, Bouquet, db
 
+bcrypt = Bcrypt()
 
 def create_bouquet():
     if request.method == 'POST':
@@ -38,23 +42,33 @@ def view_bouquet(bouquet_id):
     return render_template('view_bouquet.html', bouquet=bouquet, bouquet_prices=bouquet_prices)
 
 # Create a user.
-@app.route('/api/users', methods=['POST'])
 def create_user():
-    data = request.get_json()
-    hashed_password = generate_password_hash(data['password'], method='sha256')
+    data = request.form
+    hashed_password = bcrypt.generate_password_hash(data['password'], method='sha256')
     new_user = User(username=data['username'], password=hashed_password)
     db.session.add(new_user)
     db.session.commit()
-    return jsonify({'message': 'User created successfully'}), 201
+    return redirect(url_for('login'))
 
 # Authenticate a user.
 @app.route('/api/auth', methods=['POST'])
 def auth():
-    data = request.get_json()
+    data = request.form
     user = User.query.filter_by(username=data['username']).first()
-    if not user or not check_password_hash(user.password, data['password']):
+    if not user or not bcrypt.check_password_hash(user.password, data['password']):
         return jsonify({'message': 'Invalid username or password'}), 401
-    return jsonify({'token': user.generate_token()}), 200
+    access_token = user.generate_token()
+    login_user(user)
+    return jsonify({'token': access_token}), 200
+
+def create_user():
+    data = request.form
+    hashed_password = bcrypt.generate_password_hash(data['password'], method='sha256')
+    new_user = User(username=data['username'], password=hashed_password)
+    db.session.add(new_user)
+    db.session.commit()
+    return redirect(url_for('login'))
+
 
 # Get all flowers.
 @app.route('/api/flowers', methods=['GET'])
