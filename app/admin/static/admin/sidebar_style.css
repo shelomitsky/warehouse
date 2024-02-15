@@ -1,0 +1,54 @@
+.sidebar {
+  width: 200px; /* fixed sidebar width */
+  height: 100%; /* full height */
+  background: #FFFFFF;
+  padding: 1em;
+  box-shadow: 0px 0px 1px #171a1f, 0px 0px 2px #171a1f;
+  z-index: 98; /* Ensure it's above other content */
+}
+
+.sidebar .dropdown {
+  width: 192px; 
+  padding-left: 12px; 
+  padding-right: 34px; 
+  font-family: Manrope; 
+  font-size: 14px; 
+  font-weight: 400; 
+  line-height: 22px; 
+  color: #171A1FFF; 
+  background: #FFFFFFFF; 
+  border-radius: 4px; 
+  border-width: 1px; 
+  border-color: #9095A1FF; 
+  outline: none; 
+}
+.sidebar .dropdown option
+{
+  width: 100%;
+  padding: 0.5em;
+  margin-bottom: 0.5em;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+.sidebar .sidebar-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em; /* Spacing between menu items */
+}
+
+.sidebar .sidebar-menu-item {
+  padding: 0.5em;
+  background: #EFEFEF; /* Light background for items */
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease; /* Smooth background transition */
+}
+
+.sidebar .sidebar-menu-item:hover {
+  background: #DDD; /* Darker background on hover */
+}
+
+.sidebar .sidebar-menu-item.selected {
+  font-weight: bold;
+  background: #CCC; /* Even darker background for selected item */
+}

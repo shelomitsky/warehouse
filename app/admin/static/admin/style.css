@@ -1,0 +1,99 @@
+/* admin/static/admin/style.css */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    display: flex;
+    min-height: 100vh;
+}
+
+.sidebar {
+    width: 250px;
+    background-color: #f0f0f0;
+    padding: 20px;
+}
+
+.content {
+    flex-grow: 1;
+    padding: 20px;
+    background-color: #fff;
+}
+.error-messages {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.errors {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    color: red;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+.errors li {
+    color: red;
+}
+
+.success-messages li {
+    color: green;
+}
+/* Медиа-запросы для адаптивности */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        padding: 10px;
+    }
+}
+.content table {
+        width: 100%;
+        border-collapse: collapse; /* Убираем двойные границы */
+        margin-top: 20px; /* Добавляем немного пространства сверху */
+        font-size: 0.9em; /* Мелкий шрифт, но читаемый */
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Небольшая тень для всплывающего эффекта */
+    }
+
+    th, td {
+        padding: 12px 15px; /* Пространство внутри ячеек */
+        text-align: left; /* Выравнивание текста по левому краю */
+        border-bottom: 1px solid #dddddd; /* Граница между строками */
+    }
+
+    th {
+        background-color: #f4f4f4; /* Светло-серый фон для заголовков */
+        color: #333; /* Темно-серый цвет текста */
+        font-weight: bold; /* Жирный шрифт для заголовков */
+    }
+
+    tr:nth-child(even) {
+        background-color: #f9f9f9; /* Чередование цветов строк */
+    }
+
+    tr:hover {
+        background-color: #f1f1f1; /* Цвет при наведении */
+    }
+
+    /* Стили для изображений в таблице */
+    table img {
+        width: 50px; /* Фиксированный размер для изображений */
+        height: auto; /* Сохраняем пропорции изображений */
+        border-radius: 5px; /* Скругляем углы изображений */
+    }
+
+    /* Стилизация ссылок в таблице */
+    table a {
+        color: #007bff; /* Синий цвет ссылок */
+        text-decoration: none; /* Убираем подчеркивание */
+    }
+
+    table a:hover {
+        text-decoration: underline; /* Подчеркивание при наведении */
+    }

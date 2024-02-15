@@ -1,0 +1,19 @@
+<header>
+    <div class="header-container">
+        <div class="burger-menu" onclick="toggleMenu()">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('admin.index') }}">Индекс</a></li>
+                <li><a href="{{ url_for('admin.wh') }}">Склад</a></li>
+                <li><a href="#">Статистика</a></li>
+                <li><a href="#">Документы</a></li>
+                <li><a href="#">POS</a></li>
+                <li><a href="#">DWH</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>

@@ -1,10 +1,7 @@
-from main import app
+from main import db, create_app
 from flask import  redirect, request, jsonify, url_for, render_template
-from flask_jwt_extended import jwt_manager
-from flask_bcrypt import Bcrypt
-from flask_login import login_user
-from models import User, Flower, Material, Bouquet, FlowerSize, BouquetFlower, BouquetMaterial, Bouquet, db
-
+from models import Flower, Material, Bouquet, FlowerSize, BouquetFlower, BouquetMaterial, Bouquet, db
+app = create_app()
 
 
 def create_bouquet():

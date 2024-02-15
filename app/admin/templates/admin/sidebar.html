@@ -1,0 +1,48 @@
+<link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css>
+
+<div class="sidebar">
+ <!-- Выпадающий список -->
+ <div class="dropdown">
+   <select name="warehouse" id="warehouse">
+     <option value="">Все склады</option>
+     <!-- Пункты выпадающего списка -->
+   </select>
+ </div>
+ 
+ <!-- Остальное меню сайдбара -->
+ <ul class="sidebar-menu">
+  <li class="sidebar-menu-item indent">
+    <i class="fas fa-plus"></i>
+    <a href="{{url_for('admin.wh_create')}}">Создать товар</a>
+  </li>
+  <li class="sidebar-menu-item indent active">
+    <i class="far fa-list-alt"></i>
+    <a href="/admin/products">Управление товарами</a>
+  </li>
+   <li class="sidebar-menu-item indent">
+     <i class="fas fa-box-open"></i>
+     <a href="{{url_for('admin.products_list')}}">Все товары</a>
+   </li>
+   <li class="sidebar-menu-item indent">
+     <i class="fas fa-bouquet"></i>
+     <a href="#">Букеты</a>
+   </li>
+   <li class="sidebar-menu-item indent">
+     <i class="fas fa-seedling"></i>
+     <a href="#">Базовые цветы</a>
+   </li>
+   <li class="sidebar-menu-item indent">
+     <i class="fas fa-tags"></i>
+     <a href="#">Категории</a>
+   </li>
+   <li class="sidebar-menu-item indent">
+     <i class="fas fa-gift"></i>
+     <a href="#">Подарки</a>
+   </li>
+   <li class="sidebar-menu-item indent">
+     <i class="fas fa-scroll"></i>
+     <a href="#">Оформление</a>
+   </li>
+   <!-- Остальные пункты меню -->
+ </ul>
+</div>

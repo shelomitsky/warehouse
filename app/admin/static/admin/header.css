@@ -1,0 +1,88 @@
+
+
+@media (min-width: 769px) {
+    .header-container {
+        min-width: 100vw;
+        min-height: 30px;
+        max-height: 355vh;
+        margin: auto;
+    }
+    header {
+        background-color: #F1F0F0;
+        color: #0E0D0D;
+    }
+    
+    nav ul {
+        list-style: none;
+        padding: 0;
+        text-align: center;
+        margin: 0;
+        min-height: auto;
+    }
+    
+    nav ul li {
+        display: inline-flex;
+        top: 0;
+        margin: 0 10px auto;
+    }
+    
+    nav ul li a {
+        color: #fa4dac;
+        text-decoration: none;
+        padding: 10px 20px;
+        min-width: auto;
+        min-height: auto;
+    }
+    
+    nav ul li a:hover {
+        background-color: #B9B7B7;
+    }
+    
+    .content {
+        padding: 20px;
+    }
+}
+
+/* Стили для бургер-меню на мобильных устройствах */
+@media (max-width: 768px) {
+    .burger-menu {
+        display: block;
+        cursor: pointer;
+        z-index: 1000;
+        position: relative;
+    }
+
+    .burger-menu div {
+        width: 25px;
+        height: 3px;
+        background-color: black;
+        margin: 6px 0;
+        transition: 0.4s;
+    }
+
+    nav ul {
+        display: none;
+        position: absolute; /* Может потребоваться для корректного отображения поверх сайдбара */
+        width: 100%;
+        top: 60px; /* или другое значение, соответствующее вашему дизайну */
+        left: 0;
+        background-color: #f1f0f0;
+        z-index: 99; /* Убедитесь, что это значение выше, чем у сайдбара */
+    }
+
+    nav.active ul {
+        display: block;
+        position: absolute;
+        width: 100%;
+        top: 60px;
+        left: 0;
+        background-color: #f1f0f0;
+        z-index: 99;
+        position: relative;
+    }
+
+    nav ul li {
+        text-align: center;
+        padding: 12px 0;
+    }
+}

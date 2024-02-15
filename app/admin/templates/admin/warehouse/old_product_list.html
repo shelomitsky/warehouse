@@ -1,0 +1,72 @@
+{% extends "admin/warehouse/wh_base.html" %}
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('admin.static', filename='admin/style.css') }}">
+{% endblock %}
+{% block content %}
+<table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Image</th>
+        <th>Название</th>
+        <th>Тип товара</th>
+        <th>Стоимость</th>
+        <th>SKU</th>
+        <th>Активность</th>
+        <th>Действия</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for bouquet in items %}
+      <tr>
+        <td>{{ bouquet.id }}</td>
+        <td><img src="{{ bouquet.image_url }}" alt="{{ bouquet.name }}"></td>
+        <td>{{ bouquet.name }}</td>
+        <td>
+            {% if bouquet.category == 'base_flower' %}
+              Базовый цветок
+            {% elif bouquet.category == 'bouquet' %}
+              Букет
+            {% else %}
+              Неизвестно
+            {% endif %}
+          </td>
+        <td>{{ bouquet.calculate_price() }}</td>
+        <td>{{ bouquet.sku }}</td>
+        <td>{{ 'Активный' if bouquet.active else 'Неактивный' }}</td>
+        <td>
+            <!-- Здесь может быть кнопка для редактирования или удаления -->
+            <a href="#" onclick="openPopup('{{ url_for('admin.edit_item', id=bouquet.id) }}')">Редактировать</a>
+            <a href="{{ url_for('admin.delete_bouquet', id=bouquet.id) }}">Удалить</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+<div id="popup" style="display: none;">
+    <h2>Редактирование товара</h2>
+        <form action="{{ url_for('admin.edit_item', id=form.id.data) }}" method="POST">
+            <!-- Поля формы редактирования товара -->
+        </form>
+</div>
+<script>
+    function openPopup(url) {
+      var popup = document.getElementById("popup");
+      popup.style.display = "block";
+  
+      // Загрузить содержимое попапа из указанного URL
+      var form = popup.querySelector("form");
+      form.innerHTML = "Загрузка...";
+  
+      fetch(url)
+        .then(response => response.text())
+        .then(data => {
+          form.innerHTML = data;
+        })
+        .catch(error => {
+          console.error('Ошибка:', error);
+          form.innerHTML = "Ошибка при загрузке формы редактирования";
+        });
+    }
+  </script> 
+{% endblock %}

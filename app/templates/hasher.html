@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hasher</title>
+</head>
+<body>
+    <form method="POST">
+        <button type="submit">Generate Hash</button>
+    </form>
+    {% if hashed_password %}
+        <p>Hashed Password: {{ hashed_password }}</p>
+    {% endif %}
+</body>
+</html>

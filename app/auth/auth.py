@@ -1,13 +1,17 @@
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import login_user, login_required, logout_user, current_user, UserMixin, LoginManager
 from flask_jwt_extended import create_access_token
-from flask_bcrypt import Bcrypt
-from main import app
-from flask import  redirect, request, jsonify, url_for, render_template
+from flask import request, jsonify, url_for
+from logging import getLogger
 import jwt
-db = SQLAlchemy()
-login_manager = LoginManager()
-bcrypt = Bcrypt()
+from extensions import db, login_manager, bcrypt, Blueprint, render_template, redirect
+from admin.admin import admin
+
+
+auth_blueprint = Blueprint('auth', __name__)
+bl_login = Blueprint ('login', __name__)
+test_pages = Blueprint('test_pages', __name__)
+hashery = Blueprint('hashery',__name__ )
 """ Начало авторизации """
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -30,21 +34,35 @@ class User(UserMixin, db.Model):
     def get_id(self):
         return str(self.id)
 """ Конец авторизации """   
+@hashery.route('/hasher', methods=['GET', 'POST'])
+# создаем отображение в консоли хеша пароля "1"
+def hasher():
+    if request.method == 'POST':
+        hashed_password = bcrypt.generate_password_hash('1').decode('utf-8')
+        # Передаем хешированный пароль в шаблон
+        return render_template('hasher.html', hashed_password=hashed_password)
+    return render_template('hasher.html')
 
-@app.route('/api/auth', methods=['POST'])
-def auth():
-    data = request.form
-    user = User.query.filter_by(username=data['username']).first()
-    if not user or not bcrypt.check_password_hash(user.password, data['password']):
-        return jsonify({'message': 'Invalid username or password'}), 401
-    access_token = user.generate_token()
-    login_user(user)
-    return jsonify({'token': access_token}), 200
+@bl_login.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        user = User.query.filter_by(username=username).first()
 
-def create_user():
-    data = request.form
-    hashed_password = bcrypt.generate_password_hash(data['password'], method='sha256')
-    new_user = User(username=data['username'], password=hashed_password)
-    db.session.add(new_user)
-    db.session.commit()
-    return redirect(url_for('login'))
+        if user:
+            password_from_form = request.form['password']
+            
+            if bcrypt.check_password_hash(user.password, password_from_form):
+                # Пароль верный
+                return redirect(url_for('admin.home'))
+            else:  
+                return render_template('login.html', error="Неверный пароль")
+        else:
+            return render_template('login.html', error="Пользователь не найден")
+
+    # Если запрос методом GET (первичное отображение формы)
+    return render_template('login.html')
+
+@test_pages.route('/test_page', methods=['GET'])
+def test_page():
+    return render_template('test_page.html')

@@ -1,0 +1,49 @@
+{% extends "admin/warehouse/wh_base.html" %}
+{% block content %}
+<form method="post">
+    {{ form.csrf_token }}
+    <label for="name">Название:</label>
+    {{ form.name(class="form-control", required=True) }}
+    {% if form.name.errors %}
+        <ul class="errors">
+            {% for error in form.name.errors %}
+                <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <label for="sku">SKU:</label>
+    {{ form.sku(class="form-control", required=True) }}
+    {% if form.sku.errors %}
+        <ul class="errors">
+            {% for error in form.sku.errors %}
+                <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+
+    <label for="category">Категория:</label>
+    {{ form.category(class="form-control") }}
+
+    <label for="active">Активность товара:</label>
+    {{ form.active(class="form-check-input") }}
+
+    {% for field in [form.name, form.sku, form.category, form.active] %}
+        {% if field.errors %}
+            <ul class="errors">
+                {% for error in field.errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endfor %}
+
+    <input type="submit" value="Сохранить">
+    <button type="button" onclick="window.history.go(-1); return false;">Отменить</button>
+    <br/>
+    <label for="description">Описание</label>
+    {{ form.description(rows=15, cols=40, id="description") }}
+</form>
+
+{% endblock %}

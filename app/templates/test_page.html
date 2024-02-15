@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <meta charset="utf-8" />
+        <title> Тестовая страница Flask </title>
+    </head>
+    <body>
+        {% if message %} 
+            <p class="message {{ message_type }}">{{ message }}</p>
+        {% endif %}
+        
+        <h1>Тестовая страница Flask</h1>
+        
+        <form method="POST">
+            <label for="name">Имя:</label><br/>
+            <input type="text" id="name" name="name"><br/><br/>
+            <input type="submit" value="Отправить"/>
+        </form>  
+        
+        {% if form %}
+            <hr/>
+            
+            <form method="POST">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                
+                <fieldset>
+                    <legend>Проверка CSRF токена</legend>
+                    <div>
+                        <label for="value">CSRF значение:</label><br/>
+                        <input type="text" id="value" name="value" required><br/>
+                    </div>        
+                    <input type="submit" value="Проверить"/>
+                </fieldset>
+            </form>    
+        {% endif %}     
+    </body>
+</html>

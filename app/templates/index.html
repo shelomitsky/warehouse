@@ -1,81 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Warehouse App</title>
-</head>
-<body>
-    <h1>Welcome to the Warehouse App</h1>
-    <h2>Create User</h2>
-    <form action="/api/users" method="POST">
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required><br><br>
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required><br><br>
-        <input type="submit" value="Create User">
-    </form>
-
-    <h2>Login</h2>
-    <form action="/api/auth" method="POST">
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required><br><br>
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required><br><br>
-        <input type="submit" value="Login">
-    </form>
-
-    <h2>Flowers</h2>
-    <button onclick="getFlowers()">Get Flowers</button>
-    <ul id="flowersList"></ul>
-
-    <h2>Create Flower</h2>
-    <form id="createFlowerForm">
-        <label for="name">Name:</label>
-        <input type="text" id="name" name="name" required><br><br>
-        <label for="size">Size:</label>
-        <input type="text" id="size" name="size" required><br><br>
-        <label for="quantity">Quantity:</label>
-        <input type="number" id="quantity" name="quantity" required><br><br>
-        <input type="submit" value="Create Flower">
-    </form>
-
-    <script>
-        function getFlowers() {
-            fetch('/api/flowers')
-                .then(response => response.json())
-                .then(flowers => {
-                    const flowersList = document.getElementById('flowersList');
-                    flowersList.innerHTML = '';
-                    flowers.forEach(flower => {
-                        const li = document.createElement('li');
-                        li.textContent = `ID: ${flower.id}, Name: ${flower.name}, Size: ${flower.size}, Quantity: ${flower.quantity}`;
-                        flowersList.appendChild(li);
-                    });
-                });
-        }
-
-        document.getElementById('createFlowerForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-            const name = document.getElementById('name').value;
-            const size = document.getElementById('size').value;
-            const quantity = document.getElementById('quantity').value;
-
-            fetch('/api/flowers', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    name: name,
-                    size: size,
-                    quantity: quantity
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                alert(data.message);
-                document.getElementById('createFlowerForm').reset();
-            });
-        });
-    </script>
-</body>
+    <title>Привествую!</title>
+    <body>
+        <H1> Привет, незнакомец! Т.к ты попал сюда ты явно быть здесь не должен. Потому, я тебе расскажу пару анекдотов про тупых хакеров </h1>
+<!-- Далее идет html код со списком 3 анекдота про тупых хакеров -->
+<!-- Начало списка -->
+<ul>1: Жил был тупой хакер и решил он залезть куда не надо. Но он никогда не вышел</ul>
+<ul>2: Пред лицом смерти все глупые хакеры пошли нахуй, но один из них стал смеяться в ответ. Он вышел нахуй через костыль в жепе</ul>
+<ul>3: Когда тупой хакер решил взломать этот сайт, у него зачесалась жепа. Это у него хер в жопе завибрировал.</ul>
+Фьють ха! 
+<!-- Конец списка -->
+    </body>
 </html>

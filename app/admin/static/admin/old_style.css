@@ -1,0 +1,66 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+.container {
+  display: flex; /* establishes a flex container */
+  flex-direction: row; /* aligns children (sidebar and inventory) in a row */
+  height: calc(100vh - 80px); /* full height minus header height */
+  width: 100%; /* full width */
+}
+
+.content {
+  flex-grow: 1;
+  margin: 20px;
+}
+.inventory {
+  flex-grow: 1; /* inventory section will fill the remaining space */
+  overflow-y: auto; /* allows scrolling for the inventory content if it overflows */
+  padding: 1em;
+}
+
+.search-section {
+  margin-bottom: 1em; /* space below the search section */
+}
+
+.search-section input[type="text"] {
+  width: 100%; /* ensures the search box expands to full width */
+  padding: 0.5em; /* padding inside the search box */
+  margin-bottom: 0.5em; /* space below the search box */
+  border: 1px solid #ccc; /* border style for the search box */
+  border-radius: 4px; /* rounded corners for the search box */
+}
+
+table {
+  width: 100%; /* table takes up all available space */
+  border-collapse: collapse; /* removes space between borders */
+  text-align: left; /* aligns text to the left of each cell */
+  border-radius: 4px; 
+}
+
+th, td {
+  padding: 0.5em; /* padding inside each cell */
+  border-bottom: 1px solid #ddd; /* border between rows */
+}
+
+th {
+  background-color: #f9f9f9; /* background color for header */
+}
+
+.pagination {
+  margin-top: 1em; /* space above the pagination section */
+  text-align: center; /* centers the pagination buttons */
+}
+
+.pagination button {
+  padding: 0.5em 1em; /* padding inside each pagination button */
+  margin: 0 0.25em; /* space between pagination buttons */
+  border: none; /* no border for buttons */
+  background-color: #eee; /* background color for buttons */
+  cursor: pointer; /* cursor becomes pointer to indicate clickable */
+}
+
+.pagination button:hover {
+  background-color: #ddd; /* background color on hover */
+}
