@@ -1,0 +1,79 @@
+#col-sidebar {
+  width: 230px;
+  overflow: auto;
+  background-color: #858585; /* Вы можете выбрать более темный цвет, если нужно */
+  position: absolute; /* Обновлено с 'absolute' на 'fixed' */
+  z-index: 10;
+}
+#container {
+    min-height: 100%;
+    position: relative;
+    background: #f6f6f6;
+    overflow-x: hidden; /* Обновлено для предотвращения горизонтальной прокрутки */
+}
+
+@media (max-width: 992px) {
+  #col-sidebar {
+    display: none;
+  }
+
+  #col-sidebar.collapse.show {
+    display: block;
+    width: 100%;
+    background-color: #f8f9fa;
+    box-shadow: 5px 0px 15px 0px rgba(200, 200, 200, 1);
+    z-index: 900;
+    position: absolute;
+    top: 56px;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    overflow: hidden;
+    margin-top: 60px;
+  }
+
+  #content {
+    justify-content: center;
+  }
+  .v_polya {
+    flex-direction: column;
+  
+  }
+}
+
+@media (min-width: 992px) {
+  #content {
+    padding-left: 230px; /* Паддинг, соответствующий ширине сайдбара */
+  }
+}
+#sidebar-container {
+    min-height: 100vh;
+}
+.v_polya {
+    display:flex;
+    gap: 10px;
+    justify-content: space-between;
+
+}
+
+/* Стили управвляющих кнопок */
+.btn-check:checked + .btn-outline-primary {
+  background-color: #198754; /* Green for active */
+  border-color: #198754;
+  color: #fff; /* White text */
+}
+.btn-check:not(:checked) + .btn-outline-primary {
+  background-color: #dc3545; /* Red for inactive */
+  border-color: #dc3545;
+  color: #fff; /* White text */
+}
+.btn-check:checked + .btn-outline-primary:hover,
+.btn-check:checked + .btn-outline-primary:focus {
+  background-color: #157347; /* Darker green for hover/focus on active */
+  border-color: #157347;
+}
+.btn-check:not(:checked) + .btn-outline-primary:hover,
+.btn-check:not(:checked) + .btn-outline-primary:focus {
+  background-color: #bb2d3b; /* Darker red for hover/focus on inactive */
+  border-color: #bb2d3b;
+}

@@ -1,26 +1,45 @@
+<!DOCTYPE html>
 <html lang='ru'>
 <head>
+    {% block sysheader %}
     <meta charset='UTF-8'>
     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
     <title>{{ title|default('Админ панель') }}</title>
-    <link rel='stylesheet' href='{{ url_for('admin.static', filename='admin/style.css') }}'>
+    <!-- Подключение стилей Bootstrap через Bootstrap-Flask -->
+    {{ bootstrap.load_css() }}
     <!-- Включение стилей хидера -->
-    <link rel='stylesheet' href='{{ url_for('admin.static', filename='admin/header.css') }}'>
-    <link rel='stylesheet' href='{{ url_for('admin.static', filename='admin/sidebar_style.css') }}'>
+    <link rel="stylesheet" href="{{ url_for('admin.static', filename='admin/add_style.css') }}">
+    <script src="https://kit.fontawesome.com/fcda945bb1.js" crossorigin="anonymous"></script>
+    {% endblock %}
 </head>
 <body>
-    {% include 'admin/header.html' %}
-    <div class='container'>
-        {% include 'admin/sidebar.html' %}
-        <div class='content'>
-            {% block content %}{% endblock %}
+    <div id="container">
+        <!-- Включение хидера -->
+        <header id="header">
+                    {% block whnavbar %}
+                        {% include 'admin/header.html' %}
+                    {% endblock %}
+        </header>
+        <!-- Включение сайдбара -->
+        <div class="collapse-lg" id="col-sidebar">
+            <ul class="navbar-nav"> 
+                <div class="sidebar bg-light expand-lg border-right shadow-sm" style=" display: flex;" id="sidebar">
+                    <div class="container" id="sidebar-container">
+                        {% include 'admin/sidebar.html' %}
+                    </div>
+                </div>
+            </ul>
         </div>
-    </div>
-<script>
-    function toggleMenu() {
-        var nav = document.querySelector('nav');
-        nav.classList.toggle('active');
-    }
-    </script>        
+        <!-- Включение контента -->
+        <div class="container-fluid" id="content" style=" height: auto; display: flex;">
+            <div class="container-fluid">
+                <div class='content'>
+                    {% block content %}
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
+    <!-- Подключение скриптов Bootstrap через Bootstrap-Flask -->
+    {{ bootstrap.load_js() }}
 </body>
 </html>

@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import login_user, login_required, logout_user, current_user
 from flask_jwt_extended import JWTManager
 import os
-from extensions import db, login_manager, bcrypt, Blueprint, migrate, Bootstrap
+from extensions import db, login_manager, bcrypt, Blueprint, migrate, Bootstrap5
 from auth.auth import auth_blueprint, User, bl_login, test_pages, hashery
 from admin.admin import admin
 from models import *
@@ -14,10 +14,10 @@ os.environ['HOST'] = '0.0.0.0'
 def create_app():
     
     app = Flask(__name__)
-    Bootstrap(app)
+    Bootstrap5(app)
     #configs
     app.secret_key = 'ae1fd358c7612a02fdc6d923fd40308ebefb0e954c7ddb6f9a8bcdd1f3b00c3b'
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://warehouse:password@db:5432/warehouse'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://warehouse:password@dwhdb:5432/warehouse'
     #inits
     db.init_app(app)
     migrate.init_app(app, db)
@@ -62,6 +62,10 @@ def index():
 @app.errorhandler(404)
 def admin_page_not_found(error):
     return render_template('404.html'), 404
+
+@app.errorhandler(500)
+def internal_server_error(error):
+    return render_template('500.html'), 500
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True)

@@ -10,4 +10,4 @@ Flask-Bcrypt
 alembic
 flask_migrate
 flask_wtf
-flask-bootstrap
+bootstrap-flask

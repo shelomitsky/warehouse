@@ -1,6 +1,6 @@
 version: '3.7'
 services:
-  db:
+  dwhdb:
     image: postgres:16.1-alpine
     environment:
       - POSTGRES_USER=warehouse
@@ -23,15 +23,18 @@ services:
     networks:
       - warehouse_net
     depends_on:
-      - db
+      - dwhdb
   
   pgadmin:
     image: dpage/pgadmin4
     environment:
       PGADMIN_DEFAULT_EMAIL: shelomitsky2011@yandex.by
       PGADMIN_DEFAULT_PASSWORD: password
+      PGADMIN_DEFAULT_LANGUAGE: ru_RU
       PGADMIN_LISTEN_PORT: 80
       PGADMIN_CONFIG_SERVER_MODE: 'False'
+      POSTGRES_HOST: dwhdb
+      POSTGRES_PORT: 5432
       POSTGRES_DB: warehouse
       POSTGRES_USER: warehouse
       POSTGRES_PASSWORD: password
@@ -42,8 +45,15 @@ services:
     networks:
       - warehouse_net
     depends_on:
-      - db
+      - dwhdb
     user: "pgadmin"
+
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    command: tunnel --no-autoupdate run --token eyJhIjoiZGM5MTQ4OGZjMDk1NjYxYzFhYzhiMDAwZTZlMTk4ZmUiLCJ0IjoiYzE4YjUxOGQtN2FlYy00ZDAxLWE2ZDAtOTE0ZWE3YjBjZWRmIiwicyI6Ik1UVTNaVGt4WlRZdE16WTRaQzAwWWpNNUxXSmxNVEl0TURWaFltTTJaREU1Wm1VMyJ9
+
+    networks:
+      - warehouse_net
 
 networks:
   warehouse_net:

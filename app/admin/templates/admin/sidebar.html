@@ -1,48 +1,52 @@
-<link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css>
-
-<div class="sidebar">
- <!-- Выпадающий список -->
- <div class="dropdown">
-   <select name="warehouse" id="warehouse">
-     <option value="">Все склады</option>
-     <!-- Пункты выпадающего списка -->
-   </select>
- </div>
- 
- <!-- Остальное меню сайдбара -->
- <ul class="sidebar-menu">
-  <li class="sidebar-menu-item indent">
-    <i class="fas fa-plus"></i>
-    <a href="{{url_for('admin.wh_create')}}">Создать товар</a>
-  </li>
-  <li class="sidebar-menu-item indent active">
-    <i class="far fa-list-alt"></i>
-    <a href="/admin/products">Управление товарами</a>
-  </li>
-   <li class="sidebar-menu-item indent">
-     <i class="fas fa-box-open"></i>
-     <a href="{{url_for('admin.products_list')}}">Все товары</a>
-   </li>
-   <li class="sidebar-menu-item indent">
-     <i class="fas fa-bouquet"></i>
-     <a href="#">Букеты</a>
-   </li>
-   <li class="sidebar-menu-item indent">
-     <i class="fas fa-seedling"></i>
-     <a href="#">Базовые цветы</a>
-   </li>
-   <li class="sidebar-menu-item indent">
-     <i class="fas fa-tags"></i>
-     <a href="#">Категории</a>
-   </li>
-   <li class="sidebar-menu-item indent">
-     <i class="fas fa-gift"></i>
-     <a href="#">Подарки</a>
-   </li>
-   <li class="sidebar-menu-item indent">
-     <i class="fas fa-scroll"></i>
-     <a href="#">Оформление</a>
-   </li>
-   <!-- Остальные пункты меню -->
- </ul>
-</div>
+  <div class="dropdown mb-3">
+    <select class="form-select" name="warehouse" id="warehouse">
+        <option value="all_wh">Все склады</option>
+        <option value="lc_wh">Чайкиной</option>
+        <option value="dz_wh">Дзержинского</option>
+    </select>
+  </div>
+  <hr>
+  </li><a href="{{ url_for('admin.wh_create') }}" class="nav-link {{ 'active' if request.path == url_for('admin.products_list') else '' }}" aria-current="page">
+    <svg class="bi me-2" width="16" height="16"><use xlink:href="#bootstrap"></use></svg>
+    <span class="fs-6">+ Новый товар</span>
+  </a>
+  <hr>
+  <ul class="nav nav-pills flex-column mb-auto">
+    <li class="nav-item">
+      <a href="{{ url_for('admin.products_list') }}" class="nav-link {{ 'active' if request.path == url_for('admin.products_list') else '' }}" aria-current="page">
+        <svg class="bi me-2" width="16" height="16"><use xlink:href="#home"></use></svg>
+        Все товары
+      </a>
+    </li>
+    <li>
+      <a href="#" class="nav-link {{ 'active' if request.path == url_for('admin.products_list') else '' }}">
+        <svg class="bi me-2" width="16" height="16"><use xlink:href="#speedometer2"></use></svg>
+        Букеты
+      </a>
+    </li>
+    <li>
+      <a href="#" class="nav-link {{ 'active' if request.path == url_for('admin.products_list') else '' }}">
+        <svg class="bi me-2" width="16" height="16"><use xlink:href="#table"></use></svg>
+        Базовые цветы
+      </a>
+    </li>
+    <li>
+      <a href="#" class="nav-link {{ 'active' if request.path == url_for('admin.products_list') else '' }}">
+        <svg class="bi me-2" width="16" height="16"><use xlink:href="#grid"></use></svg>
+        Категории
+      </a>
+    </li>
+    <li>
+      <a href="#" class="nav-link {{ 'active' if request.path == url_for('admin.products_list') else '' }}">
+        <svg class="bi me-2" width="16" height="16"><use xlink:href="#people-circle"></use></svg>
+        Подарки
+      </a>
+    </li>
+    <li>
+      <a href="#" class="nav-link {{ 'active' if request.path == url_for('admin.products_list') else '' }}">
+        <svg class="bi me-2" width="16" height="16"><use xlink:href="#people-circle"></use></svg>
+        Оформление
+      </a>
+    </li>
+  </ul>
+  <hr>

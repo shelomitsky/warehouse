@@ -5,9 +5,12 @@ admin = Blueprint('admin', __name__, template_folder='templates', static_folder=
 class BouquetForm(FlaskForm):
     name = StringField('Название', validators=[DataRequired()])
     sku = StringField('SKU', validators=[DataRequired()])
-    category = SelectField('Категория товара', choices=[('base_flower', 'Базовый цветок'), ('bouquet', 'Букет')])
+    category = SelectMultipleField('Категория', choices=[('roses', 'Розы'), ('chrysanthemums', 'Хризантемы'), ('irises', 'Ирисы')])
     active = BooleanField('Активность товара')
+    image = FileField('Фото товара', validators=[FileAllowed(['jpg', 'png'], 'Только изображения!')])
     description = TextAreaField('Описание')
+    submit = SubmitField('Сохранить')
+    show_on_site = BooleanField('Показывать на сайте')
 
     def validate_name(self, name):
         # Проверка на уникальность названия букета
@@ -33,15 +36,18 @@ def wh_create():
         category = form.category.data
         active = form.active.data
         description = form.description.data
+        show_on_site = form.show_on_site.data
 
         # Создание нового объекта Bouquet
-        new_bouquet = Bouquet(name=name, sku=sku, category=category, active=active, description=description)
-        
+        new_bouquet = Bouquet(name=name, sku=sku, category=category, active=active, description=description, show_on_site=show_on_site, image=None)
+        flash('Букет успешно создан', 'success')
         # Добавление объекта в сессию базы данных и сохранение
         db.session.add(new_bouquet)
         db.session.commit()
-
-        flash('Букет успешно создан', 'success')
+        # отображение уведомленя об успешном создании букета и при нажатии на кнопку в форме "Ок" перенапрявляет на ту же страницу
+        flash('Букет успешно создан', 'create_success') 
+        
+        
         return redirect(url_for('admin.wh_create'))
 
     # Отображение сообщений об ошибках прямо в форме
@@ -49,7 +55,7 @@ def wh_create():
         for error in errors:
             flash(f'Ошибка в поле "{getattr(form, field).label.text}": {error}', 'error')
 
-    return render_template('admin/warehouse/item_create.html', title="Создание товара", form=form)
+    return render_template('admin/warehouse/item_create.html', title="Товар", form=form)
 
 @admin.route('/products')
 def products_list():
@@ -60,6 +66,10 @@ def edit_item(id):
     bouquet = Bouquet.query.get_or_404(id)
     form = BouquetForm(obj=bouquet)
     return render_template('admin/warehouse/edit_bouquet.html', form=form, bouquet=bouquet)
-@admin.route('/delete')
-def delete_bouquet():
-    return render_template('admin/warehouse/product_list.html')
+@admin.route('/delete/<int:id>')
+def delete_bouquet(id):
+    bouquet = Bouquet.query.get_or_404(id)
+    db.session.delete(bouquet)
+    db.session.commit()
+    flash('Товар успешно удален', 'success')
+    return redirect(url_for('admin.products_list'))
