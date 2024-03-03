@@ -7,12 +7,14 @@ from flask_migrate import Migrate
 from sqlalchemy.exc import IntegrityError
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
-from wtforms import StringField, SelectField, BooleanField, TextAreaField, DecimalField, FloatField, SubmitField, SelectMultipleField
-from wtforms.validators import DataRequired, ValidationError
+from wtforms import StringField, SelectField, BooleanField, TextAreaField, DecimalField, FloatField, SubmitField, SelectMultipleField, IntegerField
+from wtforms.validators import DataRequired, ValidationError, Optional
 from flask_bootstrap import Bootstrap5
+import logging
 
 db = SQLAlchemy()
 login_manager = LoginManager()
 bcrypt = Bcrypt()
 migrate = Migrate()
 bootstrap = Bootstrap5()
+logging.basicConfig(level=logging.DEBUG)

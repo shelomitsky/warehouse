@@ -9,6 +9,7 @@ from admin.admin import admin
 from models import *
 
 os.environ['HOST'] = '0.0.0.0'
+os.environ['FLASK_DEBUG'] = '1'
 
 
 def create_app():
@@ -66,6 +67,10 @@ def admin_page_not_found(error):
 @app.errorhandler(500)
 def internal_server_error(error):
     return render_template('500.html'), 500
+
+@app.errorhandler(401)
+def unauthorized(error):
+    return render_template('401.html'), 401
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True)

@@ -1,210 +1,455 @@
 {% extends "admin/warehouse/wh_base.html" %}
 {% block content %}
-<div class="container-fluid">
-    <div class="d-flex align-items-center justify-content-between">
-        <h1 class="mb-3">{{ title|default('Новый товар') }}</h1>
-        <div class="btn-group" role="group" aria-label="Product actions">
-            <input type="checkbox" class="btn-check" id="active" {{ 'checked' if form.active.value else '' }}>
-            <label class="btn btn-outline-primary" for="active">
-                <i class="fas fa-power-off"></i>
-            </label>
-            <input type="checkbox" class="btn-check" id="show_on_site" {{ 'checked' if form.show_on_site.value else '' }}>
-            <label class="btn btn-outline-primary" for="show_on_site">
-                <i class="fas fa-eye"></i>
-            </label>
-            <button type="submit" class="btn btn-primary">
-                <i class="fas fa-save"></i>
-            </button>
-            <button type="button" class="btn btn-secondary" onclick="window.history.go(-1); return false;">
-                <i class="fas fa-times-circle"></i>
-            </button>
+{% if item_type == 'bouquet' %}
+<div id="bouquet-form">
+    <form method="post" enctype="multipart/form-data" class="row g-3">
+        {{ form.csrf_token }}
+        <div class="container-fluid"> <!-- Шапка -->
+            <div class="d-flex align-items-center justify-content-between">
+                <h1 class="mb-3">{{ title|default('Новый букет') }}</h1>
+                <div class="btn-group" role="group" aria-label="Product actions">
+                    <input type="checkbox" class="btn-check" id="active" name="active" {{ 'checked' if form.active.data else '' }}>
+                    <label class="btn btn-outline-primary" for="active">
+                        <i class="fas fa-power-off"></i>
+                    </label>
+                    <input type="checkbox" class="btn-check" id="show_on_site" name="show_on_site" {{ 'checked' if form.show_on_site.data else '' }}>
+                    <label class="btn btn-outline-primary" for="show_on_site">
+                        <i class="fas fa-eye"></i>
+                    </label>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i>
+                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="window.history.go(-1); return false;">
+                        <i class="fas fa-times-circle"></i>
+                    </button>                    
+                </div>
+            </div>
         </div>
-    </div>
-</div>
-<form method="post" enctype="multipart/form-data" class="row g-3">
-    {{ form.csrf_token }}
-    <ul class="nav nav-tabs mb-3" id="productTabs">
-        <li class="nav-item">
-            <a class="nav-link active" data-bs-toggle="tab" href="#main">Основные</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="tab" href="#additional">Дополнительно</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="tab" href="#settings">Настройки</a>
-        </li>
-    </ul>
-    <div class="tab-content">
-        <div class="tab-pane fade show active" id="main">
-                <div class="row g-3">
-                    <div class="row">
-                        <!-- Форма для загрузки изображения на bootstrap с отображением вида: 200px фото слева и поле загрузки справа  -->
-                        <div class="col-md-4">
-                            <img src="https://via.placeholder.com/200" class="rounded float-start" alt="...">
-                
-                            <!--Фото в столбец справа от основного фото-->
-        
-                                <img src="https://via.placeholder.com/50" class="rounded mx-auto d-block" alt="...">
-                                <img src="https://via.placeholder.com/50" class="rounded mx-auto d-block" alt="...">
-                                <img src="https://via.placeholder.com/50" class="rounded mx-auto d-block" alt="...">
-                                <img src="https://via.placeholder.com/50" class="rounded mx-auto d-block" alt="...">
+        <ul class="nav nav-tabs mb-3" id="productTabs"> <!-- Табы -->
+            <li class="nav-item">
+                <a class="nav-link active" data-bs-toggle="tab" href="#main">Основные</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="tab" href="#additional">Опции</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="tab" href="#settings">Настройки</a>
+            </li>
+        </ul>
+        <div class="tab-content"> <!-- Табы контент -->
+            <div class="tab-pane fade show active" id="main">
+                    <div class="row g-3">
+                        <div class="row">
+                            <!-- Форма для загрузки изображения на bootstrap с отображением вида: 200px фото слева и поле загрузки справа  -->
+                            <div class="col-md-4">
+                                <img src="https://via.placeholder.com/200" class="rounded float-start" alt="...">
+                    
+                                <!--Фото в столбец справа от основного фото-->
+            
+                                    <img src="https://via.placeholder.com/50" class="rounded mx-auto d-block" alt="...">
+                                    <img src="https://via.placeholder.com/50" class="rounded mx-auto d-block" alt="...">
+                                    <img src="https://via.placeholder.com/50" class="rounded mx-auto d-block" alt="...">
+                                    <img src="https://via.placeholder.com/50" class="rounded mx-auto d-block" alt="...">
+                                </div>
                             </div>
-                        </div>
-        
-                        <div class="col-md-12">
-                            <div class="md-3">
-                                <label for="image" class="form-label"> Фото товара: </label>
+            
+                            <div class="col-md-12">
+                                <div class="md-3">
+                                    <label for="image" class="form-label"> Фото товара: </label>
+                                </div>
+                    
+                                {{ form.image(class="form-control") }}
+                                {% if form.image.errors %}
+                                    <div class="alert alert-danger">
+                                        {% for error in form.image.errors %}
+                                            <div>{{ error }}</div>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
                             </div>
-                
-                            {{ form.image(class="form-control") }}
-                            {% if form.image.errors %}
+                        <div class="col-md-6">
+                            <label for="name" class="form-label">Название:</label>
+                            {{ form.name(class="form-control", required=True) }}
+                            {% if form.name.errors %}
                                 <div class="alert alert-danger">
-                                    {% for error in form.image.errors %}
-                                        <div>{{ error }}</div>
+                                    {% for error in form.name.errors %}
+                                        <div>
+                                            {{ error }}
+                                        </div>
                                     {% endfor %}
                                 </div>
                             {% endif %}
                         </div>
-                    <div class="col-md-6">
-                        <label for="name" class="form-label">Название:</label>
-                        {{ form.name(class="form-control", required=True) }}
-                        {% if form.name.errors %}
-                            <div class="alert alert-danger">
-                                {% for error in form.name.errors %}
-                                    <div>
-                                        {{ error }}
-                                    </div>
-                                {% endfor %}
-                            </div>
-                        {% endif %}
+                        <div class="col-md-6">
+                            <label for="sku" class="form-label">SKU:</label>
+                            {{ form.sku(class="form-control", required=True) }}
+                            {% if form.sku.errors %}
+                                <div class="alert alert-danger">
+                                    {% for error in form.sku.errors %}
+                                        <div>
+                                            {{ error }}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
                     </div>
+            
+            
                     <div class="col-md-6">
-                        <label for="sku" class="form-label">SKU:</label>
-                        {{ form.sku(class="form-control", required=True) }}
-                        {% if form.sku.errors %}
-                            <div class="alert alert-danger">
-                                {% for error in form.sku.errors %}
-                                    <div>
-                                        {{ error }}
-                                    </div>
-                                {% endfor %}
+                        <label class="form-label">Категория:</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" id="roses" name="category" value="roses">
+                                <label class="form-check-label" for="roses">Розы</label>
                             </div>
-                        {% endif %}
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" id="chrysanthemums" name="category" value="chrysanthemums">
+                                <label class="form-check-label" for="chrysanthemums">Хризантемы</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" id="irises" name="category" value="irises">
+                                <label class="form-check-label" for="irises">Ирисы</label>
+                            </div>
+                    </div>
+            
+                    <div class="col-md-6">
+                        <label class="form-label">Категории товаров:</label>
+                            <select class="form-select">
+                                <option>Розы</option>
+                                <option>Хризантемы</option>
+                                <option>Ирисы</option>
+                            </select>
+                    </div>
+            
+            
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Описание:</label>
+                        {{ form.description(class="form-control", rows=5, id="description", placeholder="Описание товара") }}
+                    </div>
+                        
+                        <!-- Success Modal -->
+                        <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="successModalLabel">Success</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        Букет успешно создан!
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> 
+            </div>    
+                <script>
+                    {% if 'success' in get_flashed_messages(category_filter=['create_success']) %}
+                    var successModal = new bootstrap.Modal(document.getElementById('successModal'));
+                    successModal.show();
+                    {% endif %}
+                </script>
+            </div>
+            <div class="tab-pane fade" id="additional">
+                <!-- Дополнительные поля товара -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class ="mb-3">
+                            <label for="price" class="text-label">Итоговая расчитаная цена</label>
+                            <h3 class="text-primary" id="price">Сюда вставить цену</h3>
+                        </div>
+                        <div class="mb-3">
+                            <label for="stock" class="form-label">Время посл. редактирования:</label>
+                            <h5 class="text-secondary" id="stock">12.12.2012 14:35</h5>
+                            <label for="stock" class="form-label">Редактор</label>
+                            <figcaption class="blockquote-footer" id="editor">
+                                <p>Сюда вставить редактор букета</p>
+                                </figcaption>
+                        </div>
+
+                    <!-- Первый столбец для дополнительных настроек -->
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label for="color" class="form-label">Цвет</label>
+                            <input type="text" class="form-control" id="color" name="color" placeholder="Введите цвет">
+                        </div>
+                        <div class="mb-3">
+                            <label for="size" class="form-label">Размеры</label>
+                            <select class="form-select" id="size" name="size">
+                                <option selected>Выберите размер</option>
+                                <option value="small">Маленький</option>
+                                <option value="medium">Средний</option>
+                                <option value="large">Большой</option>
+                            </select>
+                        </div>
+                        <!-- Другие дополнительные поля -->
+                    </div>
+            
+                    <!-- Второй столбец для дополнительных настроек -->
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label for="material" class="form-label">Материал</label>
+                            <input type="text" class="form-control" id="material" name="material" placeholder="Введите материал">
+                        </div>
+                        <div class="mb-3">
+                            <label for="care" class="form-label">Аналог цветка</label>
+                            <textarea class="form-control" id="care" name="care" rows="3" placeholder="Инструкции по уходу"></textarea>
+                        </div>
+                        <!-- Другие дополнительные поля -->
                     </div>
                 </div>
-        
-        
-                <div class="col-md-6">
-                    <label class="form-label">Категория:</label>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" id="roses" name="category" value="roses">
-                            <label class="form-check-label" for="roses">Розы</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" id="chrysanthemums" name="category" value="chrysanthemums">
-                            <label class="form-check-label" for="chrysanthemums">Хризантемы</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" id="irises" name="category" value="irises">
-                            <label class="form-check-label" for="irises">Ирисы</label>
-                        </div>
-                </div>
-        
-                <div class="col-md-6">
-                    <label class="form-label">Категории товаров:</label>
-                        <select class="form-select">
-                            <option>Розы</option>
-                            <option>Хризантемы</option>
-                            <option>Ирисы</option>
-                        </select>
-                </div>
-        
-        
-                <div class="mb-3">
-                    <label for="description" class="form-label">Описание:</label>
-                    {{ form.description(class="form-control", rows=5, id="description", placeholder="Описание товара") }}
-                </div>
+            </div>
+            <div class="tab-pane fade" id="settings">
+                <!-- Настройки товара -->
+            </div>
+        </div>
+    </form>       
+</div>
+{% elif item_type == 'flower' %}
+<div id="flower-form">
+    <form method="post" enctype="multipart/form-data" class="row g-3">
+        {{ form.csrf_token }}
+        <div class="container-fluid">
+            <div class="d-flex align-items-center justify-content-between">
+                <h1 class="mb-3">{{ title|default('Новый цветок') }}</h1>
+                <input type="checkbox" class="btn-check" id="active" name="active" {{ 'checked' if form.active.data else '' }}>
+                <label class="btn btn-outline-primary" for="active">
+                    <i class="fas fa-power-off"></i>
+                </label>
+                <input type="checkbox" class="btn-check" id="show_on_site" name="show_on_site" {{ 'checked' if form.show_on_site.data else '' }}>
+                <label class="btn btn-outline-primary" for="show_on_site">
+                    <i class="fas fa-eye"></i>
+                </label>
+                
+
+            </div>
+        </div>
+        <ul class="nav nav-tabs mb-3" id="productTabs">
+            <li class="nav-item">
+                <a class="nav-link active" data-bs-toggle="tab" href="#main">Основные</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="tab" href="#option">Опции</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="tab" href="#settings">Настройки</a>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane fade show active" id="main" label="Основные">
+                    <div class="row g-3">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="mb-3">
+                                    <label for="stock" class="form-label">Время посл. редактирования:</label>
+                                    <h5 class="text-secondary" id="stock">12.12.2012 14:35</h5>
+                                    <label for="stock" class="form-label">Редактор</label>
+                                    <figcaption class="blockquote-footer" id="editor">
+                                        <p>Сюда вставить редактор букета</p>
+                                        </figcaption>
+                                </div>
+                            <!-- Форма для загрузки изображения на bootstrap с отображением вида: 200px фото слева и поле загрузки справа  -->
+                            <div class="col-md-4">
+                                <img src="https://via.placeholder.com/200" class="rounded float-start" alt="...">
                     
-                    <!-- Success Modal -->
-                    <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="successModalLabel">Success</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    Букет успешно создан!
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <!--Фото в столбец справа от основного фото-->
+            
+                                    <img src="https://via.placeholder.com/50" class="rounded mx-auto d-block" alt="...">
+                                    <img src="https://via.placeholder.com/50" class="rounded mx-auto d-block" alt="...">
+                                    <img src="https://via.placeholder.com/50" class="rounded mx-auto d-block" alt="...">
+                                    <img src="https://via.placeholder.com/50" class="rounded mx-auto d-block" alt="...">
                                 </div>
                             </div>
+            
+                            <div class="col-md-12">
+                                <div class="md-3">
+                                    <label for="image" class="form-label"> Фото товара: </label>
+                                </div>
+                    
+                                {{ form.image(class="form-control") }}
+                                {% if form.image.errors %}
+                                    <div class="alert alert-danger">
+                                        {% for error in form.image.errors %}
+                                            <div>{{ error }}</div>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        <div class="col-md-6">
+                            <label for="name" class="form-label">Название:</label>
+                            {{ form.name(class="form-control", required=True) }}
+                            {% if form.name.errors %}
+                                <div class="alert alert-danger">
+                                    {% for error in form.name.errors %}
+                                        <div>
+                                            {{ error }}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
                         </div>
-                    </div> 
-        </div>    
+                        <div class="col-md-6">
+                            <label for="sku" class="form-label">SKU:</label>
+                            {{ form.sku(class="form-control", required=True) }}
+                            {% if form.sku.errors %}
+                                <div class="alert alert-danger">
+                                    {% for error in form.sku.errors %}
+                                        <div>
+                                            {{ error }}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+            
+            
+                    <div class="col-md-6">
+                        <label class="form-label">Категория:</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" id="roses" name="category" value="roses">
+                                <label class="form-check-label" for="roses">Розы</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" id="chrysanthemums" name="category" value="chrysanthemums">
+                                <label class="form-check-label" for="chrysanthemums">Хризантемы</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" id="irises" name="category" value="irises">
+                                <label class="form-check-label" for="irises">Ирисы</label>
+                            </div>
+                    </div>
+            
+                    <div class="col-md-6">
+                        <label class="form-label">Категории товаров:</label>
+                            <select class="form-select">
+                                <option>Розы</option>
+                                <option>Хризантемы</option>
+                                <option>Ирисы</option>
+                            </select>
+                    </div>
+            
+            
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Описание:</label>
+                        {{ form.description(class="form-control", rows=5, id="description", placeholder="Описание товара") }}
+                    </div>
+                        
+                        <!-- Success Modal -->
+                        <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="successModalLabel">Success</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        Букет успешно создан!
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> 
+            </div>    
+
+            </div>
+            <div class="tab-pane fade" id="option" label="Дополнительные">
+                <!-- Дополнительные поля товара -->
+                <div class="row">
+
+                    <div class="col-md-6">
+                        <table class="table table-bordered">
+                            <label for="color" class="table-label">Размеры</label>
+                            <thead>
+                              <tr>
+                                <th scope="col">Размер</th>
+                                <th scope="col">Цена</th>
+                                <th scope="col">Количество</th>
+                                <th scope="col" >Учет в букетах</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td>40 см</td>                                
+                                <td>{{ form.price_40(class="form-control") }}</td>
+                                <td>{{ form.quantity_40(class="form-control") }}</td>                                
+                                <td>{{ form.add_to_bouquet_40(class="form-check-input") }}</td>
+                              </tr>
+                              <tr>
+                                <td>50 см</td>
+                                <td>{{ form.price_50(class="form-control") }}</td>
+                                <td>{{ form.quantity_50(class="form-control") }}</td>
+                                <td>{{ form.add_to_bouquet_50(class="form-check-input") }}</td>
+                              </tr>
+                              <tr>
+                                <td>60 см</td>
+                                <td>{{ form.price_60(class="form-control") }}</td>
+                                <td>{{ form.quantity_60(class="form-control") }}</td>
+                                <td>{{ form.add_to_bouquet_60(class="form-check-input") }}</td>
+                              </tr>
+                              <tr>
+                                <td>70 см</td>
+                                <td>{{ form.price_70(class="form-control") }}</td>
+                                <td>{{ form.quantity_70(class="form-control") }}</td>
+                                <td>{{ form.add_to_bouquet_70(class="form-check-input") }}</td>
+                              </tr>
+                              <tr>
+                                <td>80 см</td>
+                                <td>{{ form.price_80(class="form-control") }}</td>
+                                <td>{{ form.quantity_80(class="form-control") }}</td>
+                                <td>{{ form.add_to_bouquet_80(class="form-check-input") }}</td>
+                              </tr>
+                              <tr>
+                                <td>40 см</td>
+                                <td >{{ form.price_90(class="form-control") }}</td>
+                                <td>{{ form.quantity_90(class="form-control") }}</td>
+                                <td>{{ form.add_to_bouquet_90(class="form-check-input") }}</td>
+                              <tr>
+                                <td>100 см</td>
+                                <td>{{ form.price_100(class="form-control") }}</td>
+                                <td>{{ form.quantity_100(class="form-control") }}</td>
+                                <td>{{ form.add_to_bouquet_100(class="form-check-input") }}</td>
+                              </tr>
+                              <tr>
+                                <td>110 см</td>
+                                <td>{{ form.price_110(class="form-control") }}</td>
+                                <td>{{ form.quantity_110(class="form-control") }}</td>
+                                <td>{{ form.add_to_bouquet_110(class="form-check-input") }}</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        <!-- Другие дополнительные поля -->
+                    </div>
+            
+                    <!-- Второй столбец для дополнительных настроек -->
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label for="material" class="form-label">Материал</label>
+                            <input type="text" class="form-control" id="material" name="material" placeholder="Введите материал">
+                        </div>
+                        <div class="mb-3">
+                            <label for="care" class="form-label">Аналог цветка</label>
+                            <textarea class="form-control" id="care" name="care" rows="3" placeholder="Инструкции по уходу"></textarea>
+                        </div>
+                        <!-- Другие дополнительные поля -->
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="settings">
+                <!-- Настройки товара -->
+            </div>
             <script>
                 {% if 'success' in get_flashed_messages(category_filter=['create_success']) %}
-                // Display the modal
                 var successModal = new bootstrap.Modal(document.getElementById('successModal'));
                 successModal.show();
                 {% endif %}
             </script>
         </div>
-        <div class="tab-pane fade" id="additional">
-            <!-- Дополнительные поля товара -->
-            <div class="row">
-                <div class="col-md-12">
-                    <div class ="mb-3">
-                        <label for="price" class="text-label">Итоговая расчитаная цена</label>
-                        <h3 class="text-primary" id="price">Сюда вставить цену</h3>
-                    </div>
-                    <div class="mb-3">
-                        <label for="stock" class="form-label">Время посл. редактирования:</label>
-                        <h5 class="text-secondary" id="stock">12.12.2012 14:35</h5>
-                        <label for="stock" class="form-label">Редактор</label>
-                        <figcaption class="blockquote-footer" id="editor">
-                            <p>Сюда вставить редактор букета</p>
-                            </figcaption>
-                    </div>
-
-                <!-- Первый столбец для дополнительных настроек -->
-                <div class="col-md-6">
-                    <div class="mb-3">
-                        <label for="color" class="form-label">Цвет</label>
-                        <input type="text" class="form-control" id="color" name="color" placeholder="Введите цвет">
-                    </div>
-                    <div class="mb-3">
-                        <label for="size" class="form-label">Размеры</label>
-                        <select class="form-select" id="size" name="size">
-                            <option selected>Выберите размер</option>
-                            <option value="small">Маленький</option>
-                            <option value="medium">Средний</option>
-                            <option value="large">Большой</option>
-                        </select>
-                    </div>
-                    <!-- Другие дополнительные поля -->
-                </div>
-        
-                <!-- Второй столбец для дополнительных настроек -->
-                <div class="col-md-6">
-                    <div class="mb-3">
-                        <label for="material" class="form-label">Материал</label>
-                        <input type="text" class="form-control" id="material" name="material" placeholder="Введите материал">
-                    </div>
-                    <div class="mb-3">
-                        <label for="care" class="form-label">Аналог цветка</label>
-                        <textarea class="form-control" id="care" name="care" rows="3" placeholder="Инструкции по уходу"></textarea>
-                    </div>
-                    <!-- Другие дополнительные поля -->
-                </div>
-            </div>
-        </div>
-        <div class="tab-pane fade" id="settings">
-            <!-- Настройки товара -->
-        </div>
-    </div>
-</form>       
-      
-      
+    </form>       
+</div>  
+{% endif %}      
 {% endblock %}

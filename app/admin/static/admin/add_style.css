@@ -11,7 +11,10 @@
     background: #f6f6f6;
     overflow-x: hidden; /* Обновлено для предотвращения горизонтальной прокрутки */
 }
-
+html, body {
+  height: 100%;
+  margin: 0; /* Убедитесь, что нет отступов, которые могут влиять на размеры */
+}
 @media (max-width: 992px) {
   #col-sidebar {
     display: none;
@@ -76,4 +79,17 @@
 .btn-check:not(:checked) + .btn-outline-primary:focus {
   background-color: #bb2d3b; /* Darker red for hover/focus on inactive */
   border-color: #bb2d3b;
+}
+
+@keyframes fadeIn {
+  0% {
+      opacity: 0;
+  }
+  100% {
+      opacity: 1;
+  }
+}
+
+.table-animation {
+  animation: fadeIn 0.5s ease-in-out;
 }

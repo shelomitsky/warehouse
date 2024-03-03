@@ -17,13 +17,16 @@ services:
     build: .
     command: python main.py --host=0.0.0.0
     volumes:
-      - ./app:/app
+      - .:/app
     ports:
       - "5000:5000"
     networks:
       - warehouse_net
     depends_on:
       - dwhdb
+    environment:
+      - FLASK_APP=main.py
+      - FLASK_ENV=development
   
   pgadmin:
     image: dpage/pgadmin4

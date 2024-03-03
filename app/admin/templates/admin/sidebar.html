@@ -6,47 +6,52 @@
     </select>
   </div>
   <hr>
-  </li><a href="{{ url_for('admin.wh_create') }}" class="nav-link {{ 'active' if request.path == url_for('admin.products_list') else '' }}" aria-current="page">
+  </li><a href="{{ url_for('admin.wh_item', item_type='bouquet') }}" class="nav-link {{ 'active' if request.path == url_for('admin.wh_item', item_type='bouquet') else '' }}" aria-current="page">
     <svg class="bi me-2" width="16" height="16"><use xlink:href="#bootstrap"></use></svg>
-    <span class="fs-6">+ Новый товар</span>
+    <span class="fs-6">+ Новый букет</span>
+  </a>
+  </li><a href="{{ url_for('admin.wh_item', item_type='flower') }}" class="nav-link {{ 'active' if request.path == url_for('admin.wh_item', item_type='flower') else '' }}" aria-current="page">
+    <svg class="bi me-2" width="16" height="16"><use xlink:href="#bootstrap"></use></svg>
+    <span class="fs-6">+ Новый цветок</span>
   </a>
   <hr>
   <ul class="nav nav-pills flex-column mb-auto">
     <li class="nav-item">
-      <a href="{{ url_for('admin.products_list') }}" class="nav-link {{ 'active' if request.path == url_for('admin.products_list') else '' }}" aria-current="page">
-        <svg class="bi me-2" width="16" height="16"><use xlink:href="#home"></use></svg>
-        Все товары
-      </a>
+        <a href="{{ url_for('admin.products_list') }}" class="nav-link {{ 'active' if request.path == url_for('admin.products_list') and not request.args.get('list_item_type') else '' }}" aria-current="page">
+            <svg class="bi me-2" width="16" height="16"><use xlink:href="#home"></use></svg>
+            Все товары
+        </a>
     </li>
     <li>
-      <a href="#" class="nav-link {{ 'active' if request.path == url_for('admin.products_list') else '' }}">
-        <svg class="bi me-2" width="16" height="16"><use xlink:href="#speedometer2"></use></svg>
-        Букеты
-      </a>
+        <a href="{{ url_for('admin.products_list', list_item_type='bouquet') }}" class="nav-link {{ 'active' if request.args.get('list_item_type') == 'bouquet' else '' }}">
+            <svg class="bi me-2" width="16" height="16"><use xlink:href="#speedometer2"></use></svg>
+            Букеты
+        </a>
     </li>
     <li>
-      <a href="#" class="nav-link {{ 'active' if request.path == url_for('admin.products_list') else '' }}">
-        <svg class="bi me-2" width="16" height="16"><use xlink:href="#table"></use></svg>
-        Базовые цветы
-      </a>
+        <a href="{{ url_for('admin.products_list', list_item_type='flower') }}" class="nav-link {{ 'active' if request.args.get('list_item_type') == 'flower' else '' }}">
+            <svg class="bi me-2" width="16" height="16"><use xlink:href="#table"></use></svg>
+            Базовые цветы
+        </a>
     </li>
     <li>
-      <a href="#" class="nav-link {{ 'active' if request.path == url_for('admin.products_list') else '' }}">
-        <svg class="bi me-2" width="16" height="16"><use xlink:href="#grid"></use></svg>
-        Категории
-      </a>
+        <a href="#" class="nav-link {{ 'active' if request.path == url_for('admin.category_list') else '' }}">
+            <svg class="bi me-2" width="16" height="16"><use xlink:href="#grid"></use></svg>
+            Категории
+        </a>
     </li>
     <li>
-      <a href="#" class="nav-link {{ 'active' if request.path == url_for('admin.products_list') else '' }}">
-        <svg class="bi me-2" width="16" height="16"><use xlink:href="#people-circle"></use></svg>
-        Подарки
-      </a>
+        <a href="#" class="nav-link {{ 'active' if request.path == url_for('admin.gift_list') else '' }}">
+            <svg class="bi me-2" width="16" height="16"><use xlink:href="#people-circle"></use></svg>
+            Подарки
+        </a>
     </li>
     <li>
-      <a href="#" class="nav-link {{ 'active' if request.path == url_for('admin.products_list') else '' }}">
-        <svg class="bi me-2" width="16" height="16"><use xlink:href="#people-circle"></use></svg>
-        Оформление
-      </a>
+        <a href="#" class="nav-link {{ 'active' if request.path == url_for('admin.decoration_list') else '' }}">
+            <svg class="bi me-2" width="16" height="16"><use xlink:href="#people-circle"></use></svg>
+            Оформление
+        </a>
     </li>
-  </ul>
+</ul>
+
   <hr>

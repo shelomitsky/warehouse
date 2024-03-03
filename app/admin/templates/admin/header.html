@@ -40,17 +40,18 @@
       <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-                <a class="nav-link" href="{{ url_for('admin.index') }}">Главнаясссс</a>
+                <a class="nav-link" href="{{ url_for('admin.index') }}">Главная</a>
             </li>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="{{ url_for('admin.wh') }}" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     Склад
                 </a>
                 <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="{{ url_for('admin.products_list') }}">Все товары</a></li>
                     <li><a class="dropdown-item" href="#">Категории</a></li>
+                    <li><a class="dropdown-item" href="{{ url_for('admin.products_list', list_item_type='flower') }}">Базовые цветы</a></li>
+                    <li><a class="dropdown-item" href="{{ url_for('admin.products_list', list_item_type='bouquet') }}">Букеты</a></li>
                     <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item" href="#">Базовые цветы</a></li>
+
                     <li><a class="dropdown-item" href="#">Подарки</a></li>
                     <li><a class="dropdown-item" href="#">Оформление</a></li>
                   </ul>
