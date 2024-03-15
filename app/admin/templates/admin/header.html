@@ -37,12 +37,12 @@
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+      <div class="collapse navbar-collapse" id="navbarTogglerDemo02"> <!-- Навбар -->
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item">
+            <li class="nav-item"> <!-- Главная -->
                 <a class="nav-link" href="{{ url_for('admin.index') }}">Главная</a>
             </li>
-            <li class="nav-item dropdown">
+            <li class="nav-item dropdown"> <!-- Склад -->
                 <a class="nav-link dropdown-toggle" href="{{ url_for('admin.wh') }}" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     Склад
                 </a>
@@ -56,24 +56,33 @@
                     <li><a class="dropdown-item" href="#">Оформление</a></li>
                   </ul>
             </li>
-            <li class="nav-item">
+            <li class="nav-item"> <!-- Статистика -->
                 <a class="nav-link" href="#">Статистика</a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item"> <!-- Документы -->
                 <a class="nav-link" href="#">Документы</a>
             </li>
+            <li class="nav-item dropdown"> <!-- Склад -->
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Система
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="/sync/update_products">Синхронизация</a></li>
+                  </ul>
+            </li>
         </ul>
-        <div class="dropdown">
+        <div class="dropdown"> <!-- Пользователь -->
             <a href="#" class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle" id="dropdownUser2" data-bs-toggle="dropdown" aria-expanded="false">
               <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
-              <strong>mdo</strong>
+              <strong>{{ current_user.username }}</strong>
             </a>
-            <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
-              <li><a class="dropdown-item" href="#">New project...</a></li>
-              <li><a class="dropdown-item" href="#">Settings</a></li>
-              <li><a class="dropdown-item" href="#">Profile</a></li>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownUser2">
+              <li><a class="dropdown-item" href="#">Настройки</a></li> 
+              <li><a class="dropdown-item" href="/sync/update_products">Синхронизация</a></li>
+              <li><a class="dropdown-item" href="#">Профиль</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('admin.user_management') }}">Пользователи</a></li>
               <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item" href="#">Sign out</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('login.logout') }}">Выход</a></li>
             </ul>
           </div>
       </div>

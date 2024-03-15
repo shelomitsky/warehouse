@@ -51,3 +51,16 @@ class FlowerForm(FlaskForm):
     price_110 = DecimalField('Цена за 110 см', validators=[Optional()], default=0)
     quantity_110 = DecimalField('Количество', validators=[Optional()], default=0)
     add_to_bouquet_110 = BooleanField('Добавить в букет', default=False)
+    
+class CreateUserForm(FlaskForm):
+    username = StringField('Имя пользователя', validators=[
+        validators.DataRequired(),
+        validators.Length(min=3),
+        validators.Regexp(r'^[\w]+$', message="Имя пользователя может содержать только буквы, цифры и нижние подчеркивания")
+    ])
+    password = PasswordField('Пароль', validators=[
+        validators.DataRequired(),
+        validators.Length(min=5),
+        validators.Regexp(r'.*\d.*', message="Пароль должен содержать хотя бы одну цифру")
+    ])
+    roles = SelectField('Роль', choices=[('admin', 'Администратор'), ('user', 'Флорист'), ('content_manager', 'Контент-менеджер'), ('director', 'Директор')])

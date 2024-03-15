@@ -1,6 +1,6 @@
 from extensions import *
-from models import Bouquet, Flower
-from forms import BouquetForm, FlowerForm
+from models import *
+from forms import BouquetForm, FlowerForm, CreateUserForm
 
 admin = Blueprint('admin', __name__, template_folder='templates', static_folder='static')
 
@@ -59,9 +59,6 @@ def wh_item():
             flash(f'Ошибка в поле "{getattr(form, field).label.text}": {error}', 'error')
 
     return render_template('admin/warehouse/item_create.html', action=action, item_type=item_type, form=form, bouquetForm=bouquet_form, flowerForm=flower_form)
-
-
-
 
 
 """     if item_type == 'bouquet' and bouquet_form.validate_on_submit():
@@ -158,6 +155,7 @@ def wh_item():
     return render_template('admin/warehouse/item_create.html', item_type=item_type, bouquetForm=bouquet_form, flowerForm=flower_form) """
 
 @admin.route('/list/product_list')
+@login_required
 def products_list():
     list_item_type = request.args.get('list_item_type')
     search_query = request.args.get('search', '')  # Получаем значение параметра search из запроса
@@ -169,8 +167,6 @@ def products_list():
     else:
         return "Неверный тип элемента", 400  # Возвращаем ошибку 400 Bad Request
 
-    logging.debug(f"list_item_type: {list_item_type}, items: {items}")
-    logging.debug(f"Rendering template with list_item_type: {list_item_type}, items: {items}")
     return render_template('admin/warehouse/product_list.html', title="Все товары", items=items, list_item_type=list_item_type, search=search_query)
 
 
@@ -213,3 +209,52 @@ def gift_list():
 @admin.route('/decoration_list')
 def decoration_list():
     pass
+
+@admin.route('/users')
+
+def user_management():
+    users = AppUser.query.all()
+    return render_template('admin/user_management.html', users=users)
+
+@admin.route('/users/create_user', methods=['GET', 'POST'])
+def create_user():
+    form = CreateUserForm()
+    if form.validate_on_submit():
+        username = form.username.data
+        password = form.password.data
+        role_key = form.roles.data  # 'admin', 'user', 'content_manager', или 'director'
+
+        # Проверка на уникальность имени пользователя
+        existing_user = AppUser.query.filter_by(username=username).first()
+        if existing_user:
+            flash('Имя пользователя уже занято', 'error')
+            return redirect(url_for('admin.create_user'))
+
+        # Находим объект Role по ключу
+        role = Role.query.filter_by(name=role_key).first()
+        if not role:
+            flash('Выбранная роль не найдена', 'error')
+            return redirect(url_for('admin.create_user'))
+
+        # Создание нового пользователя с выбранной ролью
+        new_user = AppUser(username=username, password=bcrypt.generate_password_hash(password).decode('utf-8'), role_id=role.id)
+        db.session.add(new_user)
+        db.session.commit()
+
+        flash('Пользователь успешно создан', 'success')
+        return redirect(url_for('admin.user_management'))
+
+    return render_template('admin/create_user.html', form=form)
+
+
+@admin.route('/users/delete/<int:user_id>', methods=['POST'])
+
+def delete_user(user_id):
+    user = AppUser.query.get_or_404(user_id)
+    if user.id == current_user.id:
+        flash('Вы не можете удалить свой собственный аккаунт', 'error')
+    else:
+        db.session.delete(user)
+        db.session.commit()
+        flash('Пользователь успешно удален', 'success')
+    return redirect(url_for('admin.user_management'))

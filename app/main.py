@@ -1,11 +1,10 @@
 from flask import Flask, render_template, redirect, request
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import login_user, login_required, logout_user, current_user
-from flask_jwt_extended import JWTManager
 import os
-from extensions import db, login_manager, bcrypt, Blueprint, migrate, Bootstrap5
-from auth.auth import auth_blueprint, User, bl_login, test_pages, hashery
+from extensions import *
+from auth.auth import User, bl_login
 from admin.admin import admin
+from sync.sync_stat import oc_sync
 from models import *
 
 os.environ['HOST'] = '0.0.0.0'
@@ -22,39 +21,23 @@ def create_app():
     #inits
     db.init_app(app)
     migrate.init_app(app, db)
+    login_manager.login_view = 'login.login'
     login_manager.init_app(app)
+
     bcrypt.init_app(app)
     #blueprints
     with app.app_context():
         db.create_all()
     return app 
 app = create_app()
-# Setup the JWT Manager to handle tokens
-jwt = JWTManager(app)
-
   # Укажите вид, используемый для авторизации
-app.register_blueprint(auth_blueprint, url_prefix='/auth')
-app.register_blueprint(bl_login)
-app.register_blueprint(test_pages)
-app.register_blueprint(hashery, url_prefix='/login')
+app.register_blueprint(bl_login, url_prefix='/auth')
 app.register_blueprint(admin, url_prefix='/admin')
+app.register_blueprint(oc_sync, url_prefix='/sync')
 
 @login_manager.user_loader
 def load_user(user_id):
-    return User.query.get(int(user_id))
-
-def user_is_authenticated():
-    token = request.cookies.get('token')  # Получите токен из куки (предполагается, что он хранится в куки)
-
-    if token:
-        try:
-            payload = jwt.decode(token, 'secret', algorithms=['HS256'])
-            user_id = payload.get('id')
-            # Здесь вы можете добавить дополнительную проверку, если это необходимо
-            return True
-        except jwt.ExpiredSignatureError:
-            pass  # Обработка ошибки истечения срока действия токена
-    return False
+    return AppUser.query.get(int(user_id))
 
 
 @app.route('/')
@@ -71,6 +54,7 @@ def internal_server_error(error):
 @app.errorhandler(401)
 def unauthorized(error):
     return render_template('401.html'), 401
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True)

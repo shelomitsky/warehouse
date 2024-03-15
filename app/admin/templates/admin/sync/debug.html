@@ -1,0 +1,27 @@
+{% extends "admin/warehouse/wh_base.html" %}
+{% block content %}
+<div class="container fluid">
+    <h1>Ручное обновление</h1>
+    <p>Код статуса: {{ response_status }}</p>
+    {% if message %}
+        <div class="alert alert-info">{{ message }}</div>
+    {% endif %}
+    <form method="post" action="{{ url_for('oc_sync.update_products') }}">
+        <h2>Выберите опции для обновления:</h2>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="option1" id="option1">
+            <label class="form-check-label" for="option1">
+                Обновление всех товаров
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="option2" id="option2">
+            <label class="form-check-label" for="option2">
+               Пустая опция
+            </label>
+        </div>
+        <!-- Add more options as needed -->
+        <button type="submit" class="btn btn-primary mt-3" onclick="return confirm('Вы подтверждаете обновление?');">Обновить</button>
+    </form>
+</div>
+{% endblock %}

@@ -1,8 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
-from flask_jwt_extended import create_access_token
 from flask_bcrypt import Bcrypt
 import jwt
-from extensions import db
+from extensions import *
 # Create the database models.
  
 class Flower(db.Model):
@@ -123,5 +122,61 @@ class BouquetMaterial(db.Model):
     material_id = db.Column(db.Integer, db.ForeignKey('material.id'), nullable=False)
     quantity = db.Column(db.Integer, nullable=False)
     price = db.Column(db.Float, nullable=False)
-    
-db.create_all
+
+class Option(db.Model):
+    __tablename__ = 'options'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(255), nullable=False)
+    type = db.Column(db.String(255), nullable=False)
+    sort_order = db.Column(db.Integer, nullable=False)
+    option_values = db.relationship('OptionValue', backref='option', lazy=True)
+
+class OptionValue(db.Model):
+    __tablename__ = 'option_values'
+
+    id = db.Column(db.Integer, primary_key=True)
+    option_id = db.Column(db.Integer, db.ForeignKey('options.id'), nullable=False)
+    name = db.Column(db.String(255), nullable=False)
+    image = db.Column(db.String(255), nullable=True)
+    thumb = db.Column(db.String(255), nullable=True)
+    sort_order = db.Column(db.Integer, nullable=False)
+
+class OptionValueDescription(db.Model):
+    __tablename__ = 'option_value_descriptions'
+
+    id = db.Column(db.Integer, primary_key=True)
+    option_value_id = db.Column(db.Integer, db.ForeignKey('option_values.id'), nullable=False)
+    language_id = db.Column(db.Integer, nullable=False)
+    name = db.Column(db.String(255), nullable=False)
+
+user_roles_association = db.Table('user_roles_association',
+    db.Column('user_id', db.Integer, db.ForeignKey('users.id'), primary_key=True),
+    db.Column('role_id', db.Integer, db.ForeignKey('roles.id'), primary_key=True)
+)
+   
+class Role(db.Model):
+    __tablename__ = 'roles'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50), nullable=False, unique=True)
+
+    def __repr__(self):
+        return f'<Role {self.id}>'
+
+class AppUser(UserMixin, db.Model):
+    __tablename__ = 'users'
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(50), nullable=False, unique=True)
+    password = db.Column(db.String(100), nullable=False)
+    active = db.Column(db.Boolean, default=True)
+    confirmed_at = db.Column(db.DateTime, nullable=True)
+    role_id = db.Column(db.Integer, db.ForeignKey('roles.id'), nullable=False)  # Добавляем ссылку на Role
+
+    role = db.relationship('Role', backref=db.backref('users', lazy=True))
+
+
+    def __repr__(self):
+        return f'<User {self.id}>'
+
+ 
+db.create_all 
